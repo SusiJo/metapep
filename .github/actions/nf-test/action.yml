@@ -65,10 +65,10 @@ runs:
     # Set up Nextflow secrets for NCBI access
     - name: Set Nextflow secrets
       if: (
-        (inputs.tags == test_all') ||
+        (inputs.tags == 'test_all') ||
         (inputs.tags == 'test_mouse') ||
-        (inputs.tags ==  'test_taxa_only') ||
-        (inputs.tags == test_taxa_specific_assembly')
+        (inputs.tags == 'test_taxa_only') ||
+        (inputs.tags == 'test_taxa_specific_assembly')
         )
         && env.NCBI_EMAIL != ''
         && env.NCBI_KEY != ''
