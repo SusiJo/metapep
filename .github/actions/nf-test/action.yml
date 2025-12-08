@@ -61,16 +61,16 @@ runs:
         auto-update-conda: true
         conda-solver: libmamba
         conda-remove-defaults: true
-    
+
     # Set up Nextflow secrets for NCBI access
     - name: Set Nextflow secrets
-      if: ( 
-        contains(inputs.profile, 'test_all') || 
-        contains(inputs.profile, 'test_mouse') || 
-        contains(inputs.profile, 'test_taxa_only') || 
-        contains(inputs.profile, 'test_taxa_specific_assembly') 
+      if: (
+        (inputs.tags == test_all') ||
+        (inputs.tags == 'test_mouse') ||
+        (inputs.tags ==  'test_taxa_only') ||
+        (inputs.tags == test_taxa_specific_assembly')
         )
-        && env.NCBI_EMAIL != ''  
+        && env.NCBI_EMAIL != ''
         && env.NCBI_KEY != ''
       shell: bash
       run: |

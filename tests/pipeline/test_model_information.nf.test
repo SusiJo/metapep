@@ -4,6 +4,7 @@ nextflow_pipeline {
     script "main.nf"
     profile "test_model_information"
     tag "pipeline"
+    tag "test_model_information"
 
     test("test model information subbranch") {
 

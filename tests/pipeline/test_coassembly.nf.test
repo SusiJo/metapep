@@ -4,6 +4,7 @@ nextflow_pipeline {
     script "main.nf"
     profile "test_coassembly"
     tag "pipeline"
+    tag "test_coassembly"
 
     test("test coassembly input") {
 

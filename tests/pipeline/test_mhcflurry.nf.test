@@ -4,6 +4,7 @@ nextflow_pipeline {
     script "main.nf"
     profile "test_mhcflurry"
     tag "pipeline"
+    tag "test_mhcflurry"
 
     test("test mhcflurry prediction") {
 
