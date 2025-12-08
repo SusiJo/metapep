@@ -64,14 +64,9 @@ runs:
 
     # Set up Nextflow secrets for NCBI access
     - name: Set Nextflow secrets
-      if: (
-        (inputs.tags == 'test_all') ||
-        (inputs.tags == 'test_mouse') ||
-        (inputs.tags == 'test_taxa_only') ||
-        (inputs.tags == 'test_taxa_specific_assembly')
-        )
-        && env.NCBI_EMAIL != ''
-        && env.NCBI_KEY != ''
+      if: ${{ contains(fromJson('["test_all", "test_mouse", "test_taxa_only", "test_taxa_specific_assembly"]'), inputs.tags) 
+        && env.NCBI_EMAIL != '' 
+        && env.NCBI_KEY != '' }}
       shell: bash
       run: |
         nextflow secrets set NCBI_EMAIL "$NCBI_EMAIL"

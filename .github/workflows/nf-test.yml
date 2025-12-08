@@ -62,19 +62,9 @@ jobs:
   nf-test:
     name: "${{ matrix.profile }} | ${{ matrix.NXF_VER }} | ${{ matrix.shard }}/${{ needs.nf-test-changes.outputs.total_shards }}"
     needs: [nf-test-changes]
-    if: >
-      (
-      inputs.tags == 'test' ||
-      inputs.tags == 'test_model_information' ||
-      inputs.tags == 'test_mouse_all_pep_lengths' ||
-      inputs.tags == 'test_assembly_only' ||
-      inputs.tags == 'test_bins_only' ||
-      inputs.tags == 'test_coassembly' ||
-      inputs.tags == 'test_mhcflurry' ||
-      inputs.tags == 'test_mhcnuggets_1' ||
-      inputs.tags == 'test_mhcnuggets_2'
-      )
-      && ${{ needs.nf-test-changes.outputs.total_shards != '0' && (github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/metapep')) }}
+    if: ${{ contains(fromJson('["test", "test_model_information", "test_mouse_all_pep_lengths", "test_assembly_only", "test_bins_only", "test_mhcflurry", "test_mhcnuggets_1", "test_mhcnuggets_2"]'), inputs.tags)  
+      && needs.nf-test-changes.outputs.total_shards != '0' 
+      && (github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/metapep')) }}
     runs-on: # use self-hosted runners
       - runs-on=${{ github.run_id }}-nf-test
       - runner=4cpu-linux-x64
@@ -136,14 +126,9 @@ jobs:
   nf-test-with-secrets:
     name: "${{ matrix.profile }} | ${{ matrix.NXF_VER }} | ${{ matrix.shard }}/${{ needs.nf-test-changes.outputs.total_shards }}"
     needs: [nf-test-changes]
-    if: >
-      (
-      inputs.tags == 'test_all' ||
-      inputs.tags == 'test_mouse' ||
-      inputs.tags == 'test_taxa_only' ||
-      inputs.tags == 'test_taxa_specific_assembly' ||
-      )
-      && ${{ needs.nf-test-changes.outputs.total_shards != '0' && (github.event.pull_request.head.repo.full_name == 'nf-core/metapep' || (github.event_name == 'push' && github.repository == 'nf-core/metapep')) }}
+    if: ${{ contains(fromJson('["test_all", "test_mouse", "test_taxa_only", "test_taxa_specific_assembly"]'), inputs.tags)
+      && needs.nf-test-changes.outputs.total_shards != '0' 
+      && (github.event.pull_request.head.repo.full_name == 'nf-core/metapep' || (github.event_name == 'push' && github.repository == 'nf-core/metapep')) }}
     runs-on: # use self-hosted runners
       - runs-on=${{ github.run_id }}-nf-test
       - runner=4cpu-linux-x64
