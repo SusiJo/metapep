@@ -4,9 +4,6 @@ inputs:
   profile:
     description: "Profile to use"
     required: true
-  test_name:
-    description: "Test config to use"
-    required: true
   shard:
     description: "Shard number for this CI job"
     required: true
@@ -64,6 +61,21 @@ runs:
         auto-update-conda: true
         conda-solver: libmamba
         conda-remove-defaults: true
+    
+    # Set up Nextflow secrets for NCBI access
+    - name: Set Nextflow secrets
+      if: ( 
+        contains(inputs.profile, 'test_all') || 
+        contains(inputs.profile, 'test_mouse') || 
+        contains(inputs.profile, 'test_taxa_only') || 
+        contains(inputs.profile, 'test_taxa_specific_assembly') 
+        )
+        && env.NCBI_EMAIL != ''  
+        && env.NCBI_KEY != ''
+      shell: bash
+      run: |
+        nextflow secrets set NCBI_EMAIL "$NCBI_EMAIL"
+        nextflow secrets set NCBI_KEY "$NCBI_KEY"
 
     - name: Run nf-test
       shell: bash
@@ -73,7 +85,7 @@ runs:
         NFT_DIFF_ARGS: ${{ env.NFT_DIFF_ARGS }}
       run: |
         nf-test test \
-          --profile=+${{ inputs.profile }},${{ inputs.test_name }} \
+          --profile=+${{ inputs.profile }} \
           $(if [ -n "${{ inputs.tags }}" ]; then echo "--tag ${{ inputs.tags }}"; fi) \
           --ci \
           --changed-since HEAD^ \
