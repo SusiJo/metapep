@@ -62,6 +62,13 @@ runs:
         conda-solver: libmamba
         conda-remove-defaults: true
 
+    - name: Check inputs.profile
+      shell: bash
+      run: |
+        echo "Using profile: ${{ inputs.profile }}"
+        echo "Using shard: ${{ inputs.shard }}/${{ inputs.total_shards }}"
+        echo "Using tags: ${{ inputs.tags }}"
+
     # Set up Nextflow secrets for NCBI access
     - name: Set Nextflow secrets
       if:
