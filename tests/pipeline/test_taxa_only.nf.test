@@ -4,6 +4,7 @@ nextflow_pipeline {
     script "main.nf"
     profile "test_taxa_only"
     tag "pipeline"
+    tag "test_taxa_only"
 
     test("test taxa input") {
 
